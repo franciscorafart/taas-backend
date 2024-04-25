@@ -1,0 +1,64 @@
+version: "3.1"
+
+services:
+  mongodb:
+    image: mongo
+    container_name: my-mongodb
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: myusername # Set your desired username
+      MONGO_INITDB_ROOT_PASSWORD: mypassword # Set your desired password
+    ports:
+      - "27017:27017" # Expose MongoDB port
+    volumes:
+      - mongodb_data:/data/db # Persist MongoDB data
+    networks:
+      - backend
+
+  redis-taas:
+    image: "redis:latest"
+    restart: always
+    ports:
+      - "6380:6379" # Make host port 6380 to avoid conflict with local redis service. Mapped to 6379 on the container.
+    networks:
+      - backend
+    volumes:
+      - "redis-data-taas:/data" # Mount a volume to persist data
+    command: redis-server --appendonly yes # Enable append-only file for persistence
+
+  nodeapp-taas:
+    image: "node:20"
+    build: ./
+    working_dir: "/app"
+    volumes:
+      - "./:/app"
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db-taas
+      - redis-taas
+    environment:
+      NODE_ENV: "development"
+      SECRET: ${SECRET}
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}
+      TEST_STRIPE_SECRET_KEY: ${TEST_STRIPE_SECRET_KEY}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_REGION: ${AWS_REGION}
+      AWS_S3_BUCKET: ${AWS_S3_BUCKET}
+      EMAIL: ${EMAIL}
+      APP_URL: ${APP_URL}
+      MONGO: ${MONGO}
+    command: "yarn dev"
+    networks:
+      - backend
+
+volumes:
+  pg-db-taas:
+  redis-data-taas: # Declare the volume for Redis data persistence
+  mongodb_data:
+
+networks:
+  backend:
+    driver: bridge

@@ -1,0 +1,61 @@
+version: "3.1"
+
+services:
+  test-mongodb:
+    image: mongo
+    container_name: my-mongodb
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: myusername # Set your desired username
+      MONGO_INITDB_ROOT_PASSWORD: mypassword # Set your desired password
+    ports:
+      - "27017:27017" # Expose MongoDB port
+    volumes:
+      - mongodb_data:/data/db # Persist MongoDB data
+    networks:
+      - test-backend
+
+  test-redis-taas:
+    image: "redis:latest"
+    restart: always
+    ports:
+      - "6381:6379" # Make host port 6381 to avoid conflict with local redis service and development one. Mapped to 6379 on the container.
+    networks:
+      - test-backend
+    volumes:
+      - "test-redis-data:/data" # Mount a volume to persist data
+    command: redis-server --appendonly yes # Enable append-only file for persistence
+
+  test-taas:
+    image: "node:16" # TODO: Migrate to 20/ Fix NC install issue
+    working_dir: "/app"
+    volumes:
+      - "./:/app"
+    build:
+      context: .
+      # dockerfile: Dockerfile.test
+      args:
+        - NC_INSTALL=true
+    ports:
+      - "8001:8000"
+    depends_on:
+      - test-mongodb
+      - test-redis-taas
+    environment:
+      NODE_ENV: "test"
+      SECRET: ${SECRET}
+      REDIS_HOST: "test-redis-taas"
+      REDIS_PORT: "6379"
+      EMAIL: ${EMAIL}
+      APP_URL: ${APP_URL}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_REGION: ${AWS_REGION}
+      MONGO: ${MONGO}
+    # command: "sh -c ./init-db.sh"
+    networks:
+      - test-backend
+
+networks:
+  test-backend:
+    driver: bridge
