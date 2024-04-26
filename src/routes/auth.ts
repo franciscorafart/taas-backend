@@ -6,10 +6,10 @@ import {
   logout,
   requestPasswordReset,
   resetPassword,
-  signup,
+  signUp,
   user,
   validateToken,
-} from "../useCases/authMongo";
+} from "../useCases/auth";
 
 const router = Router();
 import PP from "../config/passport";
@@ -21,7 +21,7 @@ PP(passport);
 
 // //SignIn
 router.post("/login", login);
-router.post("/sign-up", signup);
+router.post("/sign-up", signUp);
 
 router.post("/request-password-reset", requestPasswordReset);
 

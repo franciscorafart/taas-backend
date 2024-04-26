@@ -1,9 +1,9 @@
 version: "3.1"
 
 services:
-  mongodb:
+  mongo-taas:
     image: mongo
-    container_name: my-mongodb
+    container_name: mongo-taas
     restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME: myusername # Set your desired username
@@ -18,6 +18,7 @@ services:
   redis-taas:
     image: "redis:latest"
     restart: always
+    container_name: redis-taas
     ports:
       - "6380:6379" # Make host port 6380 to avoid conflict with local redis service. Mapped to 6379 on the container.
     networks:
@@ -28,6 +29,7 @@ services:
 
   nodeapp-taas:
     image: "node:20"
+    container_name: nodeapp-taas
     build: ./
     working_dir: "/app"
     volumes:
@@ -35,7 +37,7 @@ services:
     ports:
       - "8000:8000"
     depends_on:
-      - db-taas
+      - mongo-taas
       - redis-taas
     environment:
       NODE_ENV: "development"
@@ -55,7 +57,6 @@ services:
       - backend
 
 volumes:
-  pg-db-taas:
   redis-data-taas: # Declare the volume for Redis data persistence
   mongodb_data:
 
