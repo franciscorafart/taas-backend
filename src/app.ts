@@ -4,7 +4,7 @@ import express from "express";
 import cors from "cors";
 import authentication from "./routes/auth";
 // import stripeRoute from "./routes/stripe";
-import cards from "./routes/cards";
+import readings from "./routes/readings";
 
 const isProduction = process.env.NODE_ENV === "production";
 
@@ -30,7 +30,7 @@ app.get("/", (req, res) => {
 
 // routes
 app.use("/auth", authentication);
-app.use("/cards", cards);
+app.use("/reading", readings);
 // app.use("/stripe", stripeRoute);
 
 export default app;

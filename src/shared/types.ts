@@ -13,3 +13,8 @@ export type UserUpdateAttributes = {
   credits?: number;
   stripeCheckoutSessionId?: string;
 };
+
+export type TarotCard = {
+  value: string;
+  label: string;
+};

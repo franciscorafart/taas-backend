@@ -2,25 +2,22 @@ import User, { IUser } from "../schema/User";
 import * as bcrypt from "bcryptjs";
 import { UserUpdateAttributes } from "../shared/types";
 import { logError } from "../helpers/logger";
+import { Roles } from "../shared/enums";
 
 export const createUser = async (user: UserUpdateAttributes) => {
   const date = new Date();
 
-  try {
-    const newUser = new User({
-      email: user.email,
-      password: user.encryptedPassword,
-      createdAt: date,
-      updatedAt: date,
-    });
-    // save the user
-    await newUser.save();
+  const newUser = new User({
+    email: user.email,
+    password: user.encryptedPassword,
+    createdAt: date,
+    updatedAt: date,
+    role: Roles.Reader,
+  });
+  // save the user
+  await newUser.save();
 
-    return newUser;
-  } catch (e) {
-    logError(`Error creating user ${e}`);
-    return null;
-  }
+  return newUser;
 };
 
 export const updateUser = async (

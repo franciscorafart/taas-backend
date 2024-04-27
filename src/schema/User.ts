@@ -1,5 +1,6 @@
 import { Document, Schema, model } from "mongoose";
 import * as bcrypt from "bcryptjs";
+import { Roles } from "../shared/enums";
 
 export interface IUser extends Document {
   email: string;
@@ -24,6 +25,7 @@ const UserSchema = new Schema({
   password: { type: String, required: true },
   confirmed: { type: Boolean, required: true, default: false },
   credits: { type: Number, required: false, default: 10 },
+  role: { type: Number, required: true, default: Roles.Reader },
   stripeCheckoutSessionId: { type: String, required: false },
   createdAt: { type: Date, required: true, default: Date.now },
   updatedAt: { type: Date, required: true, default: Date.now },
