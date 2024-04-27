@@ -5,7 +5,8 @@ import { ResponseStatus } from "../shared/enums";
 
 export const threeSpread = async (req, res) => {
   const { cards, question } = req.body;
-  const email = req.user.email;
+  console.log("req.user", req.user);
+  //   const { email } = req.user;
 
   try {
     if (!cards || !question) {
@@ -17,12 +18,12 @@ export const threeSpread = async (req, res) => {
       return;
     }
 
-    if (!email) {
-      // Check redis for free readings (3)
-      // Return error if no free readings
-    }
+    // if (!email) {
+    //   // Check redis for free readings (3)
+    //   // Return error if no free readings
+    // }
 
-    const existingUser = await findByEmail(email);
+    // const existingUser = await findByEmail(email);
 
     // TODO: Check if user has enough credits to make this request
 
