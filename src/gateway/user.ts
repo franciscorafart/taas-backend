@@ -64,15 +64,9 @@ export const findUserById = async (userId: string): Promise<IUser | null> => {
 };
 
 export const findByEmail = async (email: string): Promise<IUser | null> => {
-  try {
-    const user = await User.findOne({ email: email });
+  const user = await User.findOne({ email: email });
 
-    return user;
-  } catch (error) {
-    logError(`Error finding user ${error}`);
-  }
-
-  return null;
+  return user;
 };
 
 // Password management utilities. TODO: Move them somewhere else

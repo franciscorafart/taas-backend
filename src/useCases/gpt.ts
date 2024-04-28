@@ -5,8 +5,7 @@ import { ResponseStatus } from "../shared/enums";
 
 export const threeSpread = async (req, res) => {
   const { cards, question } = req.body;
-  console.log("req.user", req.user);
-  //   const { email } = req.user;
+  const { email } = req.user;
 
   try {
     if (!cards || !question) {
@@ -18,17 +17,23 @@ export const threeSpread = async (req, res) => {
       return;
     }
 
-    // if (!email) {
-    //   // Check redis for free readings (3)
-    //   // Return error if no free readings
-    // }
+    const existingUser = await findByEmail(email);
+    let credits = existingUser.credits;
 
-    // const existingUser = await findByEmail(email);
-
-    // TODO: Check if user has enough credits to make this request
+    // User needs enough credits
+    if (credits <= 0) {
+      res.status(401).send({
+        status: ResponseStatus.Unauthorized,
+        success: false,
+        msg: "Not enough credits for your reading!",
+      });
+      return;
+    }
 
     const reading = await generateGptTarotReading({ question, cards });
-    // TODO: Update user with less credits
+
+    existingUser.credits = credits - 1;
+    await existingUser.save();
 
     res.status(200).send({
       status: ResponseStatus.Ok,
@@ -37,7 +42,7 @@ export const threeSpread = async (req, res) => {
       data: reading,
     });
   } catch (err) {
-    logError(err);
+    logError(`threeSpread error: ${err}`);
     res.status(500).send({
       status: ResponseStatus.Error,
       success: false,

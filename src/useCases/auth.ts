@@ -53,6 +53,7 @@ export const login = async (req, res) => {
             token: "JWT " + token,
             email: user.email,
             id: user.id,
+            credits: user.credits,
           });
         } else {
           res.status(500).send({
