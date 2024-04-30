@@ -1,4 +1,4 @@
-import { Roles } from "shared/enums";
+import { Roles } from "../../shared/enums";
 import { UserUpdateAttributes } from "../../shared/types";
 
 export const superAdmin: UserUpdateAttributes = {
@@ -36,7 +36,7 @@ export const clientUser1: UserUpdateAttributes = {
   firstName: "Grupy",
   lastName: "Morales",
   email: "grupy@morales.com",
-  role: Roles.Fan,
+  role: Roles.Reader,
   encryptedPassword: "j0f8wyh4nr4lwrkfewr",
   confirmed: true,
 };
@@ -46,7 +46,7 @@ export const clientUser2: UserUpdateAttributes = {
   firstName: "Rodrigo",
   lastName: "Suarez",
   email: "rodrigo@suarez.com",
-  role: Roles.Fan,
+  role: Roles.Reader,
   encryptedPassword: "j0f8wyh4nr4lwrkfewr",
   confirmed: true,
 };

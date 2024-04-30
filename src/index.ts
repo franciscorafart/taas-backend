@@ -7,7 +7,7 @@ import app from "./app";
 import { logError } from "./helpers/logger";
 
 const port = process.env.PORT || 8000;
-const mongoUrl = process.env.MONGO || "mongodb://localhost/kurku";
+const mongoUrl = process.env.MONGO;
 
 const initialize = async () => {
   try {

@@ -19,7 +19,7 @@ app.use(
 // Secure Cors
 const origin = {
   origin: isProduction
-    ? ["*"] // TODO: Update when domain purchased
+    ? ["https://taas-tarot.netlify.app"] // TODO: Update when domain purchased
     : "*",
 };
 app.use(cors(origin));

@@ -31,8 +31,8 @@ The app follows an MVC model, with 4 main independent layers:
 
 - Routes: API endpoints
 - Use Cases: Business logic
-- Gateways: Layer that interacts with the database. All CRUD TypeORM methods go in here.
-- Entity: DB Models. No methods here, just PostgreSQL tables.
+- Gateways: Layer that interacts with the database. All CRUD methods here,
+- Entity: DB Models. No methods here, just Mongo schemas.
 
 Other folders:
 
@@ -66,3 +66,16 @@ The docker-compose.test.yml file doesn't have a volume for postgres (commented o
 
 - Supertest route tests don't need the docker environment set up, as supertest establishes the database connections and app independently.
 - Supertest is like a client based http request tool (ex: axios) but for api testing.
+
+# Deployment
+
+This backend is hosted on FlyIO
+`flyctl deploy -a taas-backend`
+
+## Useful Fly IO commands:
+
+`flyctl logs -a taas-backend`
+
+### Organizations
+
+`flyctl launch -o <organization_name>` => To launch an app on a specific organization
