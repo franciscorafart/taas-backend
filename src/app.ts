@@ -5,6 +5,9 @@ import cors from "cors";
 import authentication from "./routes/auth";
 // import stripeRoute from "./routes/stripe";
 import readings from "./routes/readings";
+import PersistenceLayer from "./config/PersistenceLayer";
+
+PersistenceLayer(); // Initialize Mongo and Redis
 
 const isProduction = process.env.NODE_ENV === "production";
 

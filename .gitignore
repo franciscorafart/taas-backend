@@ -3,5 +3,3 @@ coverage
 build
 .env
 .vscode
-Dockerfile.test
-init-db.sh

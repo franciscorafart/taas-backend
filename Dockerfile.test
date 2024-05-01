@@ -1,0 +1,11 @@
+FROM node:16
+
+# NOTE: This is a test Dockerfile used to install netcat on the testing env.
+# netcat is used to wait for Postgres to be available before running tests.
+
+ARG NC_INSTALL=true
+RUN echo "Running dockerfile..."
+# Install nc if specified
+RUN if [ "$NC_INSTALL" = "true" ]; then \
+      apt-get update && apt-get install -y netcat; \
+    fi

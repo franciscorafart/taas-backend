@@ -23,13 +23,13 @@ services:
     command: redis-server --appendonly yes # Enable append-only file for persistence
 
   test-taas:
-    image: "node:20" # TODO: Migrate to 20/ Fix NC install issue
+    image: "node:16" # TODO: Migrate to 20/ Fix NC install issue
     working_dir: "/app"
     volumes:
       - "./:/app"
     build:
       context: .
-      # dockerfile: Dockerfile.test
+      dockerfile: Dockerfile.test
       args:
         - NC_INSTALL=true
     ports:
@@ -47,7 +47,7 @@ services:
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
       AWS_REGION: ${AWS_REGION}
-      MONGO: mongodb://myusername:mypassword@mongo-taas:27017/test-mongo-taas?authSource=admin
+      MONGO: mongodb://myusername:mypassword@test-mongodb-taas:27017/test-mongodb-taas?authSource=admin
       OPENAI_API_KEY: ${OPENAI_API_KEY}
       OPENAI_BASE_URL: ${OPENAI_BASE_URL}
     command: "sh -c ./init-db.sh"

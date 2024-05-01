@@ -81,7 +81,6 @@ export const login = async (req, res) => {
 
 export const signUp = async (req, res) => {
   const email = req.body.email;
-
   try {
     if (!email) {
       res.status(400).send({
@@ -121,7 +120,9 @@ export const signUp = async (req, res) => {
     redisClient.expire(recoveryToken, 60 * 60); // 1hr
 
     if (redisRes === "OK") {
-      await sendResetEmail(email, recoveryToken);
+      if (process.env.NODE_ENV !== "test") {
+        await sendResetEmail(email, recoveryToken);
+      }
     } else {
       throw new Error("Token not saved");
     }
