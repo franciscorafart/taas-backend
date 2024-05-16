@@ -1,7 +1,7 @@
 import { Router } from "express";
 import passport from "passport";
 import checkRedisToken from "../middleware/checkRedisToken";
-import { threeSpread } from "../useCases/gpt";
+import { threeSpread, threeSpreadFree } from "../useCases/gpt";
 
 const router = Router();
 import PP from "../config/passport";
@@ -13,5 +13,7 @@ router.post(
   checkRedisToken,
   threeSpread
 );
+
+router.post("/three-spread-f", threeSpreadFree);
 
 export default router;

@@ -323,3 +323,29 @@ export const user = async (req, res) => {
       );
   }
 };
+
+export const getFreeReadingCount = async (req, res) => {
+  try {
+    const { ip } = req;
+    const redisResponse = await redisClient.get(ip);
+    let count = 0;
+
+    if (!redisResponse) {
+      await redisClient.set(ip, 3);
+      count = 3;
+    } else {
+      count = Number(redisResponse);
+    }
+    res.status(200).send({
+      status: ResponseStatus.Ok,
+      count,
+    });
+  } catch (err) {
+    logError(`getFreeReadingCount error: ${err}`);
+    res.status(500).send({
+      status: ResponseStatus.Error,
+      success: false,
+      msg: "Error getting free reading count",
+    });
+  }
+};

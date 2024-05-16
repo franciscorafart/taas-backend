@@ -9,10 +9,12 @@ import {
   signUp,
   user,
   validateToken,
+  getFreeReadingCount,
 } from "../useCases/auth";
 
 const router = Router();
 import PP from "../config/passport";
+
 PP(passport);
 
 /**
@@ -28,6 +30,8 @@ router.post("/request-password-reset", requestPasswordReset);
 router.post("/validate-token", validateToken);
 
 router.post("/reset-password", resetPassword);
+
+router.get("/free-count", getFreeReadingCount);
 
 router.get(
   "/user",
