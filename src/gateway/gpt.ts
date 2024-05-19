@@ -13,12 +13,15 @@ function setupOpenAI() {
 export type TarotPayload = {
   question: string;
   cards: TarotCard[];
+  model?: string;
 };
 
 export const generateGptTarotReading = async ({
   question,
   cards,
+  model,
 }: TarotPayload) => {
+  const m = model || "gpt-3.5-turbo";
   try {
     // TODO: Check if requesting user has enough credits to make this request or first thre requests with Redis
 
@@ -28,7 +31,7 @@ export const generateGptTarotReading = async ({
     }
 
     const completion = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo", // TODO: Should I change this?
+      model: m,
       messages: [
         {
           role: "system",

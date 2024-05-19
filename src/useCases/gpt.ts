@@ -84,7 +84,11 @@ export const threeSpread = async (req, res) => {
       return;
     }
 
-    const reading = await generateGptTarotReading({ question, cards });
+    const reading = await generateGptTarotReading({
+      question,
+      cards,
+      model: "gpt-4o",
+    });
 
     // TODO: Decouple: Use gateway function to update user
     existingUser.credits = credits - 1;
