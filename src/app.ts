@@ -22,7 +22,7 @@ app.use(
 // Secure Cors
 const origin = {
   origin: isProduction
-    ? ["https://taas-tarot.netlify.app"] // TODO: Update when domain purchased
+    ? ["https://taas-tarot.netlify.app", "https://taastarot.com"] // TODO: Update when domain purchased
     : "*",
 };
 app.use(cors(origin));
